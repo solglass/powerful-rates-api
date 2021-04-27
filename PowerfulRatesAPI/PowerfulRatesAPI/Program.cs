@@ -9,11 +9,20 @@ namespace PowerfulRatesAPI
     {
         public static async Task Main()
         {
-            var busControl = Bus.Factory.CreateUsingRabbitMq(cfg => cfg.Host("80.78.240.16", hst => 
+           /* var busControl = Bus.Factory.CreateUsingRabbitMq(cfg => cfg.Host("80.78.240.16", hst => 
             {
                 hst.Username("volodya22");
                 hst.Password("qwe!@#");
             }));
+           */
+            
+            
+            var busControl = Bus.Factory.CreateUsingRabbitMq(cfg => cfg.Host("localhost", hst =>
+            {
+                hst.Username("guest");
+                hst.Password("guest");
+            }));
+            
 
             await busControl.StartAsync();
             try
