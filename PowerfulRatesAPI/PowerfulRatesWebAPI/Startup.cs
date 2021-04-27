@@ -10,15 +10,38 @@ using System.Linq;
 using System.Threading.Tasks;
 using MassTransit;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using PowerfulRatesWebAPI.Config;
+using Microsoft.Extensions.Configuration;
 
 namespace PowerfulRatesWebAPI
 {
     public class Startup
+
+
     {
+
+        public IConfiguration Configuration { get; }
+        public Startup(IWebHostEnvironment env)
+        {
+            var builder = new ConfigurationBuilder()
+                .AddEnvironmentVariables()
+                .AddJsonFile("appsettings.json");
+            if (!env.IsProduction())
+            {
+                builder.AddJsonFile($"appsettings.{env.EnvironmentName}.json");
+            }
+            Configuration = builder.Build();
+        }
+
+
+
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
+            services.SwaggerExtention();
             services.AddHealthChecks();
             services.Configure<HealthCheckPublisherOptions>(options =>
             {
@@ -40,7 +63,14 @@ namespace PowerfulRatesWebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+           
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("v1/swagger.json", "PowerfulRatesWebAPI");
+            });
 
+            app.UseHttpsRedirection();
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
@@ -57,6 +87,10 @@ namespace PowerfulRatesWebAPI
 
                 endpoints.MapHealthChecks("/health/live", new HealthCheckOptions());
             });
+
+
+
+
         }
     }
 }
