@@ -11,6 +11,9 @@ namespace PowerfulRatesWebAPI
     using MassTransit;
     using Microsoft.AspNetCore.Mvc;
 
+    [ApiController]
+    [Route("api/[controller]")]
+
     public class ValueController :
         ControllerBase
     {
@@ -21,7 +24,7 @@ namespace PowerfulRatesWebAPI
             _publishEndpoint = publishEndpoint;
         }
 
-        [HttpPost]
+        [HttpPost("value")]
         public async Task<ActionResult> Post(string value)
         {
             await _publishEndpoint.Publish<ValueEntered>(new

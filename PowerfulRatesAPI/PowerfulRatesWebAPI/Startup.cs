@@ -75,10 +75,6 @@ namespace PowerfulRatesWebAPI
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
 
                 endpoints.MapHealthChecks("/health/ready", new HealthCheckOptions()
                 {
@@ -86,6 +82,7 @@ namespace PowerfulRatesWebAPI
                 });
 
                 endpoints.MapHealthChecks("/health/live", new HealthCheckOptions());
+                endpoints.MapControllers();
             });
 
 
