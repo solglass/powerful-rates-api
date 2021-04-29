@@ -26,12 +26,13 @@ namespace PowerfulRatesWebAPI
         }
 
         [HttpPost("value")]
-        public async Task<ActionResult> Post(string value)
+        public async Task<ActionResult> Post()
         {
+            var result = new CurrencyRates();
             await _publishEndpoint.Publish<ValueEntered>(new
             {
-                Value = value
-            });
+                Value = result.GetCurrencyRates()
+            }); 
 
             return Ok();
         }

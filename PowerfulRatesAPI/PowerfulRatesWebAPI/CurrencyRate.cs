@@ -14,8 +14,6 @@ namespace PowerfulRatesWebAPI
         public RestClient _client = new RestClient(url);
         public RestRequest _request = new RestRequest(Method.GET);
 
-        //public JsonDocument response;
-
         public string GetCurrencyRates()
         {
             var response = _client.Execute<string>(_request);
