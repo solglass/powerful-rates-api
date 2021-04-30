@@ -16,7 +16,7 @@ namespace PowerfulRatesWebAPI
     [ApiController]
     [Route("api/[controller]")]
 
-    public class ValueController : ControllerBase, IJob
+    public class ValueController : ControllerBase
     {
         readonly IPublishEndpoint _publishEndpoint;
 
@@ -48,11 +48,7 @@ namespace PowerfulRatesWebAPI
             Scheduler.Start();
             return Ok();
         }
-
-        public Task Execute(IJobExecutionContext context)
-        {
-            return Post();
-        }
+       
     }
 }
 

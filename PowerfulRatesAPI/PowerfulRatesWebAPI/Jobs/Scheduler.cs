@@ -14,7 +14,7 @@ namespace PowerfulRatesWebAPI.Jobs
             IScheduler scheduler = await StdSchedulerFactory.GetDefaultScheduler();
             await scheduler.Start();
 
-            IJobDetail job = JobBuilder.Create<ValueController>().Build();
+            IJobDetail job = JobBuilder.Create<RatesSender>().Build();
 
             ITrigger trigger = TriggerBuilder.Create()  // создаем триггер
                 .WithIdentity("trigger1", "group1")     // идентифицируем триггер с именем и группой
