@@ -8,17 +8,18 @@ using System.Threading.Tasks;
 
 namespace PowerfulRatesWebAPI.Jobs
 {
-    public class RatesSender : IJob
-    {
-        readonly IPublishEndpoint _publishEndpoint;
+    //public class RatesSender : IJob
+    //{
+    //    readonly IPublishEndpoint _publishEndpoint;
 
-        public  Task Execute(IJobExecutionContext context)
-        {
-            return _publishEndpoint.Publish<ValueEntered>(new
-            {
-                Value = CurrencyRates.GetCurrencyRates()
-            });
-
-        }
-    }
+    //    public  Task Execute(IJobExecutionContext context)
+    //    {
+            
+    //        return _controller.Post();
+    //        //return _publishEndpoint.Publish<ValueEntered>(new
+    //        //{
+    //        //    Value = CurrencyRates.GetCurrencyRates()
+    //        //});
+    //    }
+    //}
 }

@@ -11,11 +11,12 @@ namespace PowerfulRatesWebAPI
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using PowerfulRatesWebAPI.Jobs;
+    using Quartz;
 
     [ApiController]
     [Route("api/[controller]")]
 
-    public class ValueController : ControllerBase
+    public class ValueController : ControllerBase, IJob
     {
         readonly IPublishEndpoint _publishEndpoint;
 
@@ -46,6 +47,11 @@ namespace PowerfulRatesWebAPI
         {
             Scheduler.Start();
             return Ok();
+        }
+
+        public Task Execute(IJobExecutionContext context)
+        {
+            return Post();
         }
     }
 }
