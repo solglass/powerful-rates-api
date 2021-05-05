@@ -8,7 +8,10 @@ namespace PowerfulRatesWebAPI
     using System.Threading.Tasks;
     using EventContracts;
     using MassTransit;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using PowerfulRatesWebAPI.Jobs;
+    using Quartz;
 
     [ApiController]
     [Route("api/[controller]")]
@@ -30,6 +33,19 @@ namespace PowerfulRatesWebAPI
                 Value = CurrencyRates.GetCurrencyRates()
             }); 
 
+            return Ok();
+        }
+
+        /// <summary> 
+        /// Start sending CurrencyRates 
+        /// </summary> 
+        /// <returns>Start sending CurrencyRates </returns> 
+        // https://localhost:44365/api/rates
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpPost("rates")]
+        public ActionResult GetRates()
+        {
+            Scheduler.Start();
             return Ok();
         }
     }
