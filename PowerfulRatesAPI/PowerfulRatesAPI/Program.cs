@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using EventContracts;
 using MassTransit;
@@ -23,19 +24,14 @@ namespace PowerfulRatesAPI
                 {
                     string value = await Task.Run(() =>
                     {
-                        Console.WriteLine("Enter message (or quit to exit)");
-                        Console.Write("> ");
-                        Console.ReadLine();
                         return CurrencyRates.GetCurrencyRates();
                     });
-
-                    if ("quit".Equals(value, StringComparison.OrdinalIgnoreCase))
-                        break;
 
                     await busControl.Publish<ValueEntered>(new
                     {
                         Value = value
                     });
+                    Thread.Sleep(36000000);
                 }
             }
             finally
