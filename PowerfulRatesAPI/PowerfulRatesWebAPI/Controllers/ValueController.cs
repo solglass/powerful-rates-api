@@ -48,7 +48,6 @@ namespace PowerfulRatesWebAPI
             Scheduler.Start();
             return Ok();
         }
-       
     }
 }
 

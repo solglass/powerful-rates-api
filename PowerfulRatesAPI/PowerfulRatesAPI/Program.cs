@@ -8,15 +8,7 @@ namespace PowerfulRatesAPI
     class Program
     {
         public static async Task Main()
-        {
-           /* var busControl = Bus.Factory.CreateUsingRabbitMq(cfg => cfg.Host("80.78.240.16", hst => 
-            {
-                hst.Username("volodya22");
-                hst.Password("qwe!@#");
-            }));
-           */
-            
-            
+        {      
             var busControl = Bus.Factory.CreateUsingRabbitMq(cfg => cfg.Host("localhost", hst =>
             {
                 hst.Username("guest");
@@ -33,13 +25,14 @@ namespace PowerfulRatesAPI
                     {
                         Console.WriteLine("Enter message (or quit to exit)");
                         Console.Write("> ");
-                        return Console.ReadLine();
+                        Console.ReadLine();
+                        return CurrencyRates.GetCurrencyRates();
                     });
 
                     if ("quit".Equals(value, StringComparison.OrdinalIgnoreCase))
                         break;
 
-                    await busControl.Publish<TestMessage>(new
+                    await busControl.Publish<ValueEntered>(new
                     {
                         Value = value
                     });
