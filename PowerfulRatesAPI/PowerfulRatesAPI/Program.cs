@@ -1,9 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using EventContracts;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace PowerfulRatesAPI
@@ -14,10 +16,8 @@ namespace PowerfulRatesAPI
         public static async Task Main(string[] args)
         {
             using Microsoft.Extensions.Hosting.IHost host = CreateHostBuilder(args).Build();
-            var builder = new ConfigurationBuilder()
-               .AddEnvironmentVariables()
-               .AddJsonFile("appsettings.json");
-            Configuration = builder.Build();
+
+            Startup.ConfigureServices(args);
 
             var busControl = Bus.Factory.CreateUsingRabbitMq(cfg => cfg.Host(Configuration.GetSection("Host").Value, hst =>
             {
@@ -52,5 +52,12 @@ namespace PowerfulRatesAPI
         }
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args);
-    } 
+
+
+
+
+    }
+
+
+
 }
