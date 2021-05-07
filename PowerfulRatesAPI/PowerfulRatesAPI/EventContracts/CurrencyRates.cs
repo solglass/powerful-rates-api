@@ -4,8 +4,8 @@ using System.Text;
 
 namespace EventContracts
 {
-    public class ValueEntered
+    public class CurrencyRates
     {
-        public string Value { get; set; }
+        public Dictionary<string, decimal> Value { get; set; }
     }
 }

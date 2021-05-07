@@ -5,6 +5,8 @@ using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using System.Timers;
+using System.Collections.Generic;
+
 namespace PowerfulRatesAPI
 {
     class Program
@@ -20,7 +22,7 @@ namespace PowerfulRatesAPI
             Configuration = builder.Build();
            
             _aTimer = new Timer();
-            _aTimer.Interval = 3600000;
+            _aTimer.Interval = 5000;
             _aTimer.Elapsed += OnTimedEvent;
             _aTimer.AutoReset = true;           
             _aTimer.Enabled = true;
@@ -37,14 +39,14 @@ namespace PowerfulRatesAPI
             try
             {
 
-                string value = await Task.Run(() =>
+                Dictionary<string, decimal> value = await Task.Run(() =>
                 {
-                    var currencyRates = CurrencyRates.GetCurrencyRates();
+                    var currencyRates = CurrencyRatesSource.GetCurrencyRates();
                     Console.WriteLine($"I already sent this shit in {DateTime.Now} you jerk!");
                     return currencyRates;
                 });
 
-                await busControl.Publish<ValueEntered>(new
+                await busControl.Publish<CurrencyRates>(new
                 {
                     Value = value
                 });
