@@ -1,63 +1,36 @@
 ﻿using System;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using EventContracts;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Timers;
-using System.Collections.Generic;
+using PowerfulRatesAPI.Services;
 
 namespace PowerfulRatesAPI
 {
     class Program
     {
-        public static IConfiguration Configuration { get; set; }
-        private static Timer _aTimer;
         public static async Task Main(string[] args)
         {
             using Microsoft.Extensions.Hosting.IHost host = CreateHostBuilder(args).Build();
-            var builder = new ConfigurationBuilder()
-               .AddEnvironmentVariables()
-               .AddJsonFile("appsettings.json");
-            Configuration = builder.Build();
-           
-            _aTimer = new Timer();
-            _aTimer.Interval = 5000;
-            _aTimer.Elapsed += OnTimedEvent;
-            _aTimer.AutoReset = true;           
-            _aTimer.Enabled = true;
-            await host.RunAsync();
-        }
-        private async static void OnTimedEvent(Object source, ElapsedEventArgs e)
-        {
-            var busControl = Bus.Factory.CreateUsingRabbitMq(cfg => cfg.Host(Configuration.GetSection("Host").Value, hst =>
-            {
-                hst.Username(Configuration.GetSection("Login").Value);
-                hst.Password(Configuration.GetSection("Password").Value);
-            }));
-            await busControl.StartAsync();
-            try
-            {
 
-                Dictionary<string, decimal> value = await Task.Run(() =>
-                {
-                    var currencyRates = CurrencyRatesSource.GetCurrencyRates();
-                    Console.WriteLine($"I already sent this shit in {DateTime.Now} you jerk!");
-                    return currencyRates;
-                });
+            var services = Startup.ConfigureServices(args);
 
-                await busControl.Publish<CurrencyRates>(new
-                {
-                    Value = value
-                });
+            var serviceProvider = services.BuildServiceProvider();
 
-            }
-            finally
-            {
-                await busControl.StopAsync();
-            }
+            serviceProvider.GetService<IRabbitMqMassTransitBus>().SetupTimer();
+            await serviceProvider.GetService<IRabbitMqMassTransitBus>().StartBusAsync();
+            serviceProvider.GetService<IRabbitMqMassTransitBus>().SendFirstMessage();
+            Console.ReadLine();
         }
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args);
-    } 
+
+    }
+
+
+
 }
