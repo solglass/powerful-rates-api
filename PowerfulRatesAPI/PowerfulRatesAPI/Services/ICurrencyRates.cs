@@ -1,7 +1,9 @@
-﻿namespace PowerfulRatesAPI
+﻿using System.Collections.Generic;
+
+namespace PowerfulRatesAPI
 {
     public interface ICurrencyRates
     {
-        string GetCurrencyRates();
+        Dictionary<string, decimal> GetCurrencyRates();
     }
 }
