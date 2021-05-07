@@ -23,6 +23,7 @@ namespace PowerfulRatesAPI
 
             serviceProvider.GetService<IRabbitMqMassTransitBus>().SetupTimer();
             await serviceProvider.GetService<IRabbitMqMassTransitBus>().StartBusAsync();
+            serviceProvider.GetService<IRabbitMqMassTransitBus>().SendFirstMessage();
             Console.ReadLine();
         }
         private static IHostBuilder CreateHostBuilder(string[] args) =>

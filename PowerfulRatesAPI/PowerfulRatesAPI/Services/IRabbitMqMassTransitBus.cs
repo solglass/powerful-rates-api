@@ -6,5 +6,6 @@ namespace PowerfulRatesAPI.Services
     {
         Task StartBusAsync();
         void SetupTimer();
+        void SendFirstMessage();
     }
 }

@@ -47,7 +47,11 @@ namespace PowerfulRatesAPI.Services
                 Enabled = true
             };
             _aTimer.Elapsed += SendMessagesAsync;
+            
         }
+
+        public void SendFirstMessage() => SendMessagesAsync(null, null);
+
         public async Task StartBusAsync() =>
             await _busControl.StartAsync();
 
@@ -59,7 +63,7 @@ namespace PowerfulRatesAPI.Services
                 Dictionary<string, decimal> value = await Task.Run(() =>
                 {
                     var currencyRates = _currencyRates.GetCurrencyRates();
-                    Console.WriteLine($"The mesage was sent in {DateTime.Now} ");
+                    Console.WriteLine($"Currency rates were obtained in {DateTime.Now} ");
                     return currencyRates;
                 });
 
