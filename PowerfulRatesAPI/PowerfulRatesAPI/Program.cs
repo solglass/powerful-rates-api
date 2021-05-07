@@ -13,7 +13,6 @@ namespace PowerfulRatesAPI
 {
     class Program
     {
-        // public static IConfiguration Configuration { get; set; }
         public static async Task Main(string[] args)
         {
             using Microsoft.Extensions.Hosting.IHost host = CreateHostBuilder(args).Build();
@@ -27,7 +26,6 @@ namespace PowerfulRatesAPI
         }
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args);
-
 
     }
 

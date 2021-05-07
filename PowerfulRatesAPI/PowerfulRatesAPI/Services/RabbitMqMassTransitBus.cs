@@ -36,8 +36,8 @@ namespace PowerfulRatesAPI.Services
             }));
 
         }
-        //async
-        public async Task SetupTimedEvent()
+        //TODO fix async or delete 
+        /*public async Task SetupTimedEvent()
         {
             _aTimer = new Timer
             {
@@ -47,6 +47,7 @@ namespace PowerfulRatesAPI.Services
             };
            // _aTimer.Elapsed += StartBusAsync;
         }
+        */
         //public async void StartBusAsync(Object source, ElapsedEventArgs e)
         public async Task StartBusAsync()
         {
