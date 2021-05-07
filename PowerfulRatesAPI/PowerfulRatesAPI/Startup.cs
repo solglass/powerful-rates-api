@@ -19,7 +19,7 @@ namespace PowerfulRatesAPI
 
             var config = SetupConfiguration(args);
             services.AddSingleton(config);
-            services.RegistrateServicesConfig();
+            services.RegistrateServicesConfig(config);
 
             return services;
         }

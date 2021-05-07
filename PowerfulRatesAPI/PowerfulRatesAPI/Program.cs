@@ -7,53 +7,26 @@ using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PowerfulRatesAPI.Services;
 
 namespace PowerfulRatesAPI
 {
     class Program
     {
-        public static IConfiguration Configuration { get; set; }
+        // public static IConfiguration Configuration { get; set; }
         public static async Task Main(string[] args)
         {
             using Microsoft.Extensions.Hosting.IHost host = CreateHostBuilder(args).Build();
 
-            Startup.ConfigureServices(args);
+            var services = Startup.ConfigureServices(args);
 
-            var busControl = Bus.Factory.CreateUsingRabbitMq(cfg => cfg.Host(Configuration.GetSection("Host").Value, hst =>
-            {
-                hst.Username(Configuration.GetSection("Login").Value);
-                hst.Password(Configuration.GetSection("Password").Value);
-            }));
-            
-            await busControl.StartAsync();
-            try
-            {
-                while (true)
-                {
-                    string value = await Task.Run(() =>
-                    {
-                        var currencyRates = CurrencyRates.GetCurrencyRates();
-                        Console.WriteLine($"I already sent this shit in {DateTime.Now} you jerk!");
-                        return currencyRates;
-                    });
+            var serviceProvider = services.BuildServiceProvider();
 
-                    await busControl.Publish<ValueEntered>(new
-                    {
-                        Value = value
-                    });
-                    Thread.Sleep(3600000);
-                }
-            }
-            finally
-            {
-                await busControl.StopAsync();
-            }
-            await host.RunAsync();
+            await serviceProvider.GetService<IRabbitMqMassTransitBus>().StartBusAsync();
+
         }
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args);
-
-
 
 
     }
