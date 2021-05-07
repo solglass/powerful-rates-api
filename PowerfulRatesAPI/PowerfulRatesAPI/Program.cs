@@ -21,8 +21,9 @@ namespace PowerfulRatesAPI
 
             var serviceProvider = services.BuildServiceProvider();
 
+            serviceProvider.GetService<IRabbitMqMassTransitBus>().SetupTimer();
             await serviceProvider.GetService<IRabbitMqMassTransitBus>().StartBusAsync();
-
+            Console.ReadLine();
         }
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args);

@@ -20,13 +20,14 @@ namespace PowerfulRatesAPI.Services
         private string _password;
         private ICurrencyRates _currencyRates;
         private Timer _aTimer;
-        private const int _interval = 5000;
+        private readonly int _interval;
 
         public RabbitMqMassTransitBus(IConfiguration config, ICurrencyRates currencyRates)
         {
             _host = config.GetSection("Host").Value;
             _login = config.GetSection("Login").Value;
             _password = config.GetSection("Password").Value;
+            _interval = config.GetValue<int>("Interval");
             _currencyRates = currencyRates;
 
             _busControl = Bus.Factory.CreateUsingRabbitMq(cfg => cfg.Host(_host, hst =>
@@ -36,8 +37,8 @@ namespace PowerfulRatesAPI.Services
             }));
 
         }
-        //TODO fix async or delete 
-        /*public async Task SetupTimedEvent()
+
+        public void SetupTimer()
         {
             _aTimer = new Timer
             {
@@ -45,40 +46,35 @@ namespace PowerfulRatesAPI.Services
                 AutoReset = true,
                 Enabled = true
             };
-           // _aTimer.Elapsed += StartBusAsync;
+            _aTimer.Elapsed += SendMessagesAsync;
         }
-        */
-        //public async void StartBusAsync(Object source, ElapsedEventArgs e)
-        public async Task StartBusAsync()
+        public async Task StartBusAsync() =>
+            await _busControl.StartAsync();
+
+        private async void SendMessagesAsync(Object source, ElapsedEventArgs e)
         {
 
-            await _busControl.StartAsync();
-            while (true)
+            try
             {
-                try  
+                Dictionary<string, decimal> value = await Task.Run(() =>
                 {
-                    Dictionary<string, decimal> value = await Task.Run(() =>
-                    {
-                        var currencyRates = _currencyRates.GetCurrencyRates();
-                        Console.WriteLine($"The mesage was sent in {DateTime.Now} ");
-                        return currencyRates;
-                    });
+                    var currencyRates = _currencyRates.GetCurrencyRates();
+                    Console.WriteLine($"The mesage was sent in {DateTime.Now} ");
+                    return currencyRates;
+                });
 
-                    await _busControl.Publish<CurrencyRates>(new
-                    {
-                        Value = value
-                    });
-                    Thread.Sleep(_interval);
-                }
-
-
-                finally
+                await _busControl.Publish<CurrencyRates>(new
                 {
-                    await _busControl.StopAsync();
-                }
-               
+                    Value = value
+                });
             }
 
+
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error occured: {ex.Message}");
+            }
         }
     }
 }
+

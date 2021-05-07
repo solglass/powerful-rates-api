@@ -5,5 +5,6 @@ namespace PowerfulRatesAPI.Services
     public interface IRabbitMqMassTransitBus
     {
         Task StartBusAsync();
+        void SetupTimer();
     }
 }
