@@ -33,7 +33,7 @@ namespace PowerfulRatesAPI
         {
             var response = _client.Execute<string>(_request);
             var json = JObject.Parse(response.Data);
-            var result = json["quotes"].Select(s => new
+            var result = json["price"].Select(s => new
             {
                 CurrencyName = (s as JProperty).Name,
                 CurrencyValue = (s as JProperty).Value
