@@ -67,7 +67,7 @@ namespace PowerfulRatesAPI.Services
                     return currencyRates;
                 });
 
-                await _busControl.Publish<CurrencyRates>(new
+                await _busControl.Publish<EventContracts.CurrencyRates>(new
                 {
                     Value = value
                 });
