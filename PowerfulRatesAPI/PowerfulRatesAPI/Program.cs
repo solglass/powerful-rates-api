@@ -15,7 +15,6 @@ namespace PowerfulRatesAPI
     {
         public static async Task Main(string[] args)
         {
-            using Microsoft.Extensions.Hosting.IHost host = CreateHostBuilder(args).Build();
 
             var services = Startup.ConfigureServices(args);
 
@@ -26,8 +25,6 @@ namespace PowerfulRatesAPI
             serviceProvider.GetService<IRabbitMqMassTransitBus>().SendFirstMessage();
             Console.ReadLine();
         }
-        private static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args);
 
     }
 
