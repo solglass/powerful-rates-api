@@ -13,6 +13,5 @@ namespace PowerfulRatesAPI.Config
             services.AddSingleton<IRabbitMqMassTransitBusService, RabbitMqMassTransitBusService>();
 
         }
-
     }
 }
