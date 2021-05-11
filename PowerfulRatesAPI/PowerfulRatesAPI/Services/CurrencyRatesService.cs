@@ -26,7 +26,7 @@ namespace PowerfulRatesAPI
         }
         public CurrencyRatesService(IOptions<AppSettings> options)
         {
-            _url = options.Value.CurrencyRatesSource;
+            _url = options.Value.CURRENCY_RATES_SOURCE;
             _client = new RestClient(_url);
             _request = new RestRequest(Method.GET);
         }

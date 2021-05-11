@@ -22,10 +22,10 @@ namespace PowerfulRatesAPI.Services
 
         public RabbitMqMassTransitBusService(IOptions<AppSettings> options, ICurrencyRatesService currencyRates)
         {
-            _host = options.Value.Host;
-            _login = options.Value.Login;
-            _password = options.Value.Password;
-            _interval = options.Value.Interval;
+            _host = options.Value.RATES_API_RABBITMQ_HOST;
+            _login = options.Value.RATES_API_RABBITMQ_LOGIN;
+            _password = options.Value.RATES_API_RABBITMQ_PASSWORD;
+            _interval = options.Value.RATES_API_TIMER_INTERVAL;
             _currencyRates = currencyRates;
 
             _busControl = Bus.Factory.CreateUsingRabbitMq(cfg => cfg.Host(_host, hst =>

@@ -19,7 +19,6 @@ namespace PowerfulRatesAPI
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .AddEnvironmentVariables()
-                //.AddCommandLine(args)
                 .Build();
         }
         public static IServiceCollection ConfigureServices(string[] args)
@@ -31,15 +30,5 @@ namespace PowerfulRatesAPI
 
             return services;
         }
-
-        //private static IConfiguration SetupConfiguration(string[] args)
-        //{
-        //    return new ConfigurationBuilder()
-        //        .SetBasePath(Directory.GetCurrentDirectory())
-        //        .AddJsonFile("appsettings.json")
-        //        .AddEnvironmentVariables()
-        //        .AddCommandLine(args)
-        //        .Build();
-        //}
     }
 }

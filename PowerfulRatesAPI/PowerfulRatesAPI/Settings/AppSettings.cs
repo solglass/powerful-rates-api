@@ -6,10 +6,10 @@ namespace PowerfulRatesAPI.Settings
 {
     public class AppSettings
     {
-        public string Host { get; set; }
-        public string Login { get; set; }
-        public string Password { get; set; }
-        public string CurrencyRatesSource { get; set; }
-        public int Interval { get; set; }
+        public string RATES_API_RABBITMQ_HOST { get; set; }
+        public string RATES_API_RABBITMQ_LOGIN { get; set; }
+        public string RATES_API_RABBITMQ_PASSWORD { get; set; }
+        public string CURRENCY_RATES_SOURCE { get; set; }
+        public int RATES_API_TIMER_INTERVAL { get; set; }
     }
 }
