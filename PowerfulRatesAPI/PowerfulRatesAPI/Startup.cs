@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PowerfulRatesAPI.Config;
+using PowerfulRatesAPI.Settings;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,31 +12,34 @@ namespace PowerfulRatesAPI
 {
     public class Startup
     {
-
-
+        private static IConfiguration _configuration;
+        static Startup()
+        {
+            _configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .AddEnvironmentVariables()
+                //.AddCommandLine(args)
+                .Build();
+        }
         public static IServiceCollection ConfigureServices(string[] args)
         {
             IServiceCollection services = new ServiceCollection();
 
-            var config = SetupConfiguration(args);
-            services.AddSingleton(config);
-            services.RegistrateServicesConfig(config);
+            services.RegistrateServicesConfig();
+            services.Configure<AppSettings>(_configuration);
 
             return services;
         }
 
-        private static IConfiguration SetupConfiguration(string[] args)
-        {
-            return new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .AddEnvironmentVariables()
-                .AddCommandLine(args)
-                .Build();
-        }
-
-
+        //private static IConfiguration SetupConfiguration(string[] args)
+        //{
+        //    return new ConfigurationBuilder()
+        //        .SetBasePath(Directory.GetCurrentDirectory())
+        //        .AddJsonFile("appsettings.json")
+        //        .AddEnvironmentVariables()
+        //        .AddCommandLine(args)
+        //        .Build();
+        //}
     }
-
-
 }

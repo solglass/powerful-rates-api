@@ -20,9 +20,9 @@ namespace PowerfulRatesAPI
 
             var serviceProvider = services.BuildServiceProvider();
 
-            serviceProvider.GetService<IRabbitMqMassTransitBus>().SetupTimer();
-            await serviceProvider.GetService<IRabbitMqMassTransitBus>().StartBusAsync();
-            serviceProvider.GetService<IRabbitMqMassTransitBus>().SendFirstMessage();
+            serviceProvider.GetService<IRabbitMqMassTransitBusService>().SetupTimer();
+            await serviceProvider.GetService<IRabbitMqMassTransitBusService>().StartBusAsync();
+            serviceProvider.GetService<IRabbitMqMassTransitBusService>().SendFirstMessage();
             Console.ReadLine();
         }
 
