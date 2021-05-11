@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PowerfulRatesAPI.Config;
+using PowerfulRatesAPI.Services;
 using PowerfulRatesAPI.Settings;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace PowerfulRatesAPI
     public class Startup
     {
         private static IConfiguration _configuration;
+        private static IServiceProvider _serviceProvider;
         static Startup()
         {
             _configuration = new ConfigurationBuilder()
@@ -21,16 +23,22 @@ namespace PowerfulRatesAPI
                 .AddEnvironmentVariables()
                 //.AddCommandLine(args)
                 .Build();
+            _serviceProvider = new ServiceCollection()
+                .ConfigureServices(_configuration)
+                .BuildServiceProvider();
         }
-        public static IServiceCollection ConfigureServices(string[] args)
+
+        public static async void ProvideServices()
         {
-            IServiceCollection services = new ServiceCollection();
-
-            services.RegistrateServicesConfig();
-            services.Configure<AppSettings>(_configuration);
-
-            return services;
+            _serviceProvider.GetService<IRabbitMqMassTransitBusService>().SetupTimer();
+           await _serviceProvider.GetService<IRabbitMqMassTransitBusService>().StartBusAsync();
+            _serviceProvider.GetService<IRabbitMqMassTransitBusService>().SendFirstMessage();
         }
+        //public static void ConfigureServices(this IServiceCollection services)
+        //{
+        //    services.RegistrateServicesConfig();
+        //    services.Configure<AppSettings>(_configuration);
+        //}
 
         //private static IConfiguration SetupConfiguration(string[] args)
         //{
