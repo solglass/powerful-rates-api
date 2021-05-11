@@ -15,7 +15,8 @@ namespace PowerfulRatesAPI
     {
         public static async Task Main(string[] args)
         {
-            Startup.ProvideServices();
+            var startup = new Startup();
+            startup.ProvideServices();
             Console.ReadLine();
         }
 
