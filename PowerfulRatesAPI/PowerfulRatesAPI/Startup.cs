@@ -29,7 +29,6 @@ namespace PowerfulRatesAPI
 
         public async void ProvideServices()
         {
-            _serviceProvider.GetService<IRabbitMqMassTransitBusService>().SetupTimer();
            await _serviceProvider.GetService<IRabbitMqMassTransitBusService>().StartBusAsync();
             _serviceProvider.GetService<IRabbitMqMassTransitBusService>().SendFirstMessage();
         }

@@ -19,7 +19,6 @@ namespace PowerfulRatesAPI
             startup.ProvideServices();
             Console.ReadLine();
         }
-
     }
 
 
