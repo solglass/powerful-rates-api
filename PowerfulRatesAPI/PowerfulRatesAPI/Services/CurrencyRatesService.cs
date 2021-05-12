@@ -20,10 +20,6 @@ namespace PowerfulRatesAPI
         private RestClient _client;
         private RestRequest _request;
 
-        public CurrencyRatesService()
-        {
-
-        }
         public CurrencyRatesService(IOptions<AppSettings> options)
         {
             _url = options.Value.CURRENCY_RATES_SOURCE;

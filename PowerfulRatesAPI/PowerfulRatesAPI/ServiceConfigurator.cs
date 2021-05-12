@@ -12,7 +12,7 @@ namespace PowerfulRatesAPI
     {
         public static IServiceCollection ConfigureServices(this IServiceCollection services,  IConfiguration configuration)
         {
-            services.RegistrateServicesConfig();
+            services.RegisterServicesConfig();
             services.Configure<AppSettings>(configuration);
             return services;
         }

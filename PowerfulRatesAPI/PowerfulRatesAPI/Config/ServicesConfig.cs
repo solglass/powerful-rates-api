@@ -7,7 +7,7 @@ namespace PowerfulRatesAPI.Config
 {
     public static class ServicesConfig
     {
-        public static void RegistrateServicesConfig(this IServiceCollection services)
+        public static void RegisterServicesConfig(this IServiceCollection services)
         {
             services.AddSingleton<ICurrencyRatesService, CurrencyRatesService>();
             services.AddSingleton<IRabbitMqMassTransitBusService, RabbitMqMassTransitBusService>();

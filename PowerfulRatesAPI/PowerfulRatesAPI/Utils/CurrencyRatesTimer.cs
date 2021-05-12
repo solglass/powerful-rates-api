@@ -16,13 +16,7 @@ namespace PowerfulRatesAPI.Utils
             };
         }
 
-        public void SubscribeToTimer(ElapsedEventHandler method)
-        {
-            _timer.Elapsed += method;
-        }
-        public void UnsubscribeFromTimer(ElapsedEventHandler method)
-        {
-            _timer.Elapsed -= method;
-        }
+        public void SubscribeToTimer(ElapsedEventHandler method) => _timer.Elapsed += method;
+        public void UnsubscribeFromTimer(ElapsedEventHandler method) => _timer.Elapsed -= method;
     }
 }
