@@ -40,7 +40,10 @@ namespace PowerfulRatesAPI.Services
 
             try
             {
-                await _busControl.Publish<CurrencyRates>(_currencyRates.GetCurrencyRates());
+                await _busControl.Publish<CurrencyRates>(new
+                {
+                    Value = _currencyRates.GetCurrencyRates()
+                });
                 await Console.Out.WriteLineAsync($"Currency rates were sent in {DateTime.Now} ");
             }
 
