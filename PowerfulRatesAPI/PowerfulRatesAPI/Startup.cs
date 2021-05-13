@@ -27,10 +27,9 @@ namespace PowerfulRatesAPI
                 .BuildServiceProvider();
         }
 
-        public async void ProvideServices()
+        public T ProvideServices<T>()
         {
-           await _serviceProvider.GetService<IRabbitMqMassTransitBusService>().StartBusAsync();
-            _serviceProvider.GetService<IRabbitMqMassTransitBusService>().SendFirstMessage();
+            return _serviceProvider.GetService<T>();
         }
     }
 }
