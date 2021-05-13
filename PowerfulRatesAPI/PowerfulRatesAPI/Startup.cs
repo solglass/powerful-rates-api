@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PowerfulRatesAPI
 {
@@ -27,10 +28,10 @@ namespace PowerfulRatesAPI
                 .BuildServiceProvider();
         }
 
-        public async void ProvideServices()
+        public async Task ProvideServices()
         {
            await _serviceProvider.GetService<IRabbitMqMassTransitBusService>().StartBusAsync();
-            _serviceProvider.GetService<IRabbitMqMassTransitBusService>().SendFirstMessage();
+           _serviceProvider.GetService<IRabbitMqMassTransitBusService>().SendFirstMessage();
         }
     }
 }
