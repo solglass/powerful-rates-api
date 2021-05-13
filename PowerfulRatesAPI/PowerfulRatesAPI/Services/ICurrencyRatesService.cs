@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PowerfulRatesAPI
 {
     public interface ICurrencyRatesService
     {
-        Dictionary<string, decimal> GetCurrencyRates();
+        Task<Dictionary<string, decimal>> GetCurrencyRates();
     }
 }

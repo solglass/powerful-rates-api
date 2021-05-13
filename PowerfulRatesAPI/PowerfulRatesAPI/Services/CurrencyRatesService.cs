@@ -27,10 +27,14 @@ namespace PowerfulRatesAPI
             _request = new RestRequest(Method.GET);
         }
 
-        public Dictionary<string, decimal> GetCurrencyRates()
+        public async Task<Dictionary<string, decimal>> GetCurrencyRates()
         {
-            var response = _client.Execute<string>(_request);
-            var json = JObject.Parse(response.Data);
+            var response = await _client.ExecuteAsync<string>(_request);
+            return CreateCurrencyRatesDictionary(response.Data);
+        }
+        private Dictionary<string, decimal> CreateCurrencyRatesDictionary(string currencyPairs)
+        {
+            var json = JObject.Parse(currencyPairs);
             var result = json["price"].Select(s => new
             {
                 CurrencyName = (s as JProperty).Name,
