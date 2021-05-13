@@ -20,7 +20,7 @@ namespace PowerfulRatesAPI.Services
         {
             _currencyRates = currencyRates;
             _timer = new CurrencyRatesTimer(options.Value.RATES_API_TIMER_INTERVAL);
-            _timer.SubscribeToTimer(() => SendMessagesAsync(null, null));
+            _timer.SubscribeToTimer((Object source, ElapsedEventArgs e) => SendMessagesAsync(source, e));
 
             _busControl = Bus.Factory.CreateUsingRabbitMq(cfg => cfg.Host(options.Value.RATES_API_RABBITMQ_HOST, hst =>
             {
@@ -41,13 +41,13 @@ namespace PowerfulRatesAPI.Services
             try
             {
                 await _busControl.Publish<CurrencyRates>(_currencyRates.GetCurrencyRates());
-                Console.WriteLine($"Currency rates were sent in {DateTime.Now} ");
+                await Console.Out.WriteLineAsync($"Currency rates were sent in {DateTime.Now} ");
             }
 
 
             catch (Exception ex)
             {
-                Console.WriteLine($"Error occured: {ex.Message}");
+                await Console.Out.WriteLineAsync($"Error occured: {ex.Message}");
             }
         }
     }
