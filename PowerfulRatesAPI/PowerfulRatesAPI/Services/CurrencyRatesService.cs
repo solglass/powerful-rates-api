@@ -19,6 +19,8 @@ namespace PowerfulRatesAPI
         private string _url;
         private RestClient _client;
         private RestRequest _request;
+        private const string _baseCurrencyPair = "USDUSD";
+        private const decimal _baseCurrencyPairValue = 1;
 
         public CurrencyRatesService(IOptions<AppSettings> options)
         {
@@ -41,6 +43,7 @@ namespace PowerfulRatesAPI
                 CurrencyValue = (s as JProperty).Value
             })
             .ToDictionary(k => k.CurrencyName, v => Convert.ToDecimal(v.CurrencyValue));
+            result.Add(_baseCurrencyPair, _baseCurrencyPairValue);
             return result;
         }
     }
