@@ -27,12 +27,13 @@ namespace PowerfulRatesAPI
                 .BuildServiceProvider();
         }
 
-        public T ProvideServices<T>()
+        public T ProvideService<T>()
         {
             try
             {
                 return _serviceProvider.GetService<T>();
             }
+            //CustomException
             catch (Exception ex)
             {
                 throw ex;              

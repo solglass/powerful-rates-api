@@ -29,7 +29,7 @@ namespace PowerfulRatesAPI
             _request = new RestRequest(Method.GET);
         }
 
-        public async Task<Dictionary<string, decimal>> GetCurrencyRates()
+        public async Task<Dictionary<string, decimal>> GetCurrencyRatesAsync()
         {
             try
             {

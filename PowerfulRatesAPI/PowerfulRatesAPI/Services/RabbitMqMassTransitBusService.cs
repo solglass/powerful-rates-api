@@ -28,8 +28,7 @@ namespace PowerfulRatesAPI.Services
                 hst.Password(options.Value.RATES_API_RABBITMQ_PASSWORD);
             }));
         }
-
-        
+ 
         public async Task SendFirstMessage() => await SendMessagesAsync(null, null);
 
         public async Task StartBusAsync() =>
@@ -37,21 +36,22 @@ namespace PowerfulRatesAPI.Services
 
         private async Task SendMessagesAsync(Object source, ElapsedEventArgs e)
         {
-
             try
             {
-                await _busControl.Publish<CurrencyRates>(new
-                {
-                    Value = _currencyRates.GetCurrencyRates()
-                });
-                await Console.Out.WriteLineAsync($"Currency rates were sent in {DateTime.Now} ");
+                var rates = await _currencyRates.GetCurrencyRatesAsync();
+                if (rates != null && rates.Count > 0) 
+                    await PublishCurrencyRatesAsync(new CurrencyRates { Value = rates });
             }
-
-
             catch (Exception ex)
             {
                 await Console.Out.WriteLineAsync($"Error occured: {ex.Message}");
             }
+        }
+
+        public async Task PublishCurrencyRatesAsync(CurrencyRates currencyRates)
+        {
+            await _busControl.Publish(currencyRates);
+            await Console.Out.WriteLineAsync($"Currency rates were sent in {DateTime.Now} ");
         }
     }
 }

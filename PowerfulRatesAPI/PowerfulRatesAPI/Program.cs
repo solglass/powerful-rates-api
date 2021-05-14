@@ -16,8 +16,8 @@ namespace PowerfulRatesAPI
         public static async Task Main(string[] args)
         {
             var startup = new Startup();
-            await startup.ProvideServices<IRabbitMqMassTransitBusService>().StartBusAsync();
-            await startup.ProvideServices<IRabbitMqMassTransitBusService>().SendFirstMessage();
+            await startup.ProvideService<IRabbitMqMassTransitBusService>().StartBusAsync();
+            await startup.ProvideService<IRabbitMqMassTransitBusService>().SendFirstMessage();
             Console.ReadLine();
         }
     }

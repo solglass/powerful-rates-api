@@ -5,6 +5,6 @@ namespace PowerfulRatesAPI
 {
     public interface ICurrencyRatesService
     {
-        Task<Dictionary<string, decimal>> GetCurrencyRates();
+        Task<Dictionary<string, decimal>> GetCurrencyRatesAsync();
     }
 }
