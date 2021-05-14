@@ -29,7 +29,14 @@ namespace PowerfulRatesAPI
 
         public T ProvideServices<T>()
         {
-            return _serviceProvider.GetService<T>();
+            try
+            {
+                return _serviceProvider.GetService<T>();
+            }
+            catch (Exception ex)
+            {
+                throw ex;              
+            }
         }
     }
 }

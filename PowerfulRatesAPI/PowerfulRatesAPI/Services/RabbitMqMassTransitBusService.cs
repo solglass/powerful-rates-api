@@ -29,7 +29,7 @@ namespace PowerfulRatesAPI.Services
             }));
         }
 
-
+        
         public async Task SendFirstMessage() => await SendMessagesAsync(null, null);
 
         public async Task StartBusAsync() =>

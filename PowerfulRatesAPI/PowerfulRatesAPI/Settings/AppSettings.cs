@@ -9,7 +9,7 @@ namespace PowerfulRatesAPI.Settings
         public string RATES_API_RABBITMQ_HOST { get; set; }
         public string RATES_API_RABBITMQ_LOGIN { get; set; }
         public string RATES_API_RABBITMQ_PASSWORD { get; set; }
-        public string CURRENCY_RATES_SOURCE { get; set; }
+        public string RATES_API_CURRENCY_RATES_SOURCE { get; set; }
         public int RATES_API_TIMER_INTERVAL { get; set; }
     }
 }

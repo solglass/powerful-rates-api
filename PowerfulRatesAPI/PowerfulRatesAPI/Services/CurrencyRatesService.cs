@@ -24,15 +24,22 @@ namespace PowerfulRatesAPI
 
         public CurrencyRatesService(IOptions<AppSettings> options)
         {
-            _url = options.Value.CURRENCY_RATES_SOURCE;
+            _url = options.Value.RATES_API_CURRENCY_RATES_SOURCE;
             _client = new RestClient(_url);
             _request = new RestRequest(Method.GET);
         }
 
         public async Task<Dictionary<string, decimal>> GetCurrencyRates()
         {
-            var response = await _client.ExecuteAsync<string>(_request);
-            return CreateCurrencyRatesDictionary(response.Data);
+            try
+            {
+                var response = await _client.ExecuteAsync<string>(_request);
+                return CreateCurrencyRatesDictionary(response.Data);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         private Dictionary<string, decimal> CreateCurrencyRatesDictionary(string currencyPairs)
         {
