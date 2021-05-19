@@ -13,15 +13,20 @@ namespace PowerfulRatesAPI
 {
     class Program
     {
+        private static Startup _startup;
         public static async Task Main(string[] args)
         {
-            var startup = new Startup();
-            await startup.ProvideService<IRabbitMqMassTransitBusService>().StartBusAsync();
-            await startup.ProvideService<IRabbitMqMassTransitBusService>().SendFirstMessage();
+            _startup = new Startup();
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            await _startup.ProvideService<ICurrencyRatesSenderService>().SendFirstMessage();
+            Console.ReadLine();
+        }
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            _startup.ProvideService<IPublisherService>().PublishAsync(new HandledException { Value = e.ExceptionObject as Exception });
+            Console.WriteLine($"Exception was sent in {DateTime.Now} ");
             Console.ReadLine();
         }
     }
-
-
 
 }

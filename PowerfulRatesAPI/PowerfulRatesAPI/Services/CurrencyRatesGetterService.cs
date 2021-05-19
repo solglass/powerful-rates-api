@@ -5,7 +5,6 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Text.Json;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using PowerfulRatesAPI.Settings;
 using Microsoft.Extensions.Options;
@@ -13,7 +12,7 @@ using Microsoft.Extensions.Options;
 namespace PowerfulRatesAPI
 {
 
-    public class CurrencyRatesService : ICurrencyRatesService
+    public class CurrencyRatesGetterService : ICurrencyRatesGetterService
     {
 
         private string _url;
@@ -22,7 +21,7 @@ namespace PowerfulRatesAPI
         private const string _baseCurrencyPair = "USDUSD";
         private const decimal _baseCurrencyPairValue = 1;
 
-        public CurrencyRatesService(IOptions<AppSettings> options)
+        public CurrencyRatesGetterService(IOptions<AppSettings> options)
         {
             _url = options.Value.RATES_API_CURRENCY_RATES_SOURCE;
             _client = new RestClient(_url);

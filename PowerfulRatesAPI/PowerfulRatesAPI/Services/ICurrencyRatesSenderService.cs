@@ -2,9 +2,8 @@ using System.Threading.Tasks;
 
 namespace PowerfulRatesAPI.Services
 {
-    public interface IRabbitMqMassTransitBusService
+    public interface ICurrencyRatesSenderService
     {
-        Task StartBusAsync();
         Task SendFirstMessage();
     }
 }

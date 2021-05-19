@@ -1,13 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using PowerfulRatesAPI.Config;
-using PowerfulRatesAPI.Services;
-using PowerfulRatesAPI.Settings;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace PowerfulRatesAPI
 {

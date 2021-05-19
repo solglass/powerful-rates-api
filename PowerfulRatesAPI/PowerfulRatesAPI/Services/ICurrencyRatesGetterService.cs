@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace PowerfulRatesAPI
 {
-    public interface ICurrencyRatesService
+    public interface ICurrencyRatesGetterService
     {
         Task<Dictionary<string, decimal>> GetCurrencyRatesAsync();
     }
