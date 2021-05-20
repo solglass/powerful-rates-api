@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MassTransit;
 using Microsoft.Extensions.Options;
 using PowerfulRatesAPI.Settings;
-using EventContracts;
-using PowerfulRatesAPI.Utils;
-using System.Timers;
 
 namespace PowerfulRatesAPI.Services
 {
@@ -23,9 +18,9 @@ namespace PowerfulRatesAPI.Services
             _busControl.StartAsync();
         }
 
-        public async Task PublishAsync<T>(T type)
+        public async Task PublishAsync(object message)
         {
-            await _busControl.Publish(type);
+            await _busControl.Publish(message);
         }
     }
 }

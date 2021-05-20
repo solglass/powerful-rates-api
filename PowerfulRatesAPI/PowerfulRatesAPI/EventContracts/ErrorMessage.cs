@@ -4,8 +4,8 @@ using System.Text;
 
 namespace EventContracts
 {
-    public class HandledException
+    public class ErrorMessage
     {
-        public Exception Value { get; set; }
+        public string Value { get; set; }
     }
 }

@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using MassTransit;
 using Microsoft.Extensions.Options;
 using PowerfulRatesAPI.Settings;
 using EventContracts;
 using PowerfulRatesAPI.Utils;
 using System.Timers;
+using PowerfulRatesAPI.CustomExceptions;
 
 namespace PowerfulRatesAPI.Services
 {
@@ -31,15 +30,23 @@ namespace PowerfulRatesAPI.Services
             try
             {
                 var rates = await _currencyRates.GetCurrencyRatesAsync();
-                if (rates != null && rates.Count > 0)
-                {
-                    await _publisherService.PublishAsync(new CurrencyRates { Value = rates });
-                    await Console.Out.WriteLineAsync($"Currency rates were sent in {DateTime.Now} ");
-                }
+                await _publisherService.PublishAsync(new CurrencyRates { Value = rates });
+                await Console.Out.WriteLineAsync($"Currency rates were sent in {DateTime.Now} ");
             }
-            catch (Exception ex)
+            catch (ServiceUnavailableException exception)
             {
-                throw ex;
+                await _publisherService.PublishAsync(new ErrorMessage { Value = exception.ErrorMessage });
+                await Console.Out.WriteLineAsync($"Exception: {exception.ErrorMessage}, with statuscode: {exception.StatusCode} was sent in {DateTime.Now} ");
+            }
+            catch (ParsingException exception)
+            {
+                await _publisherService.PublishAsync(new ErrorMessage { Value = exception.ErrorMessage });
+                await Console.Out.WriteLineAsync($"Exception: {exception.ErrorMessage}, with statuscode: {exception.StatusCode} was sent in {DateTime.Now} ");
+            }
+            catch (Exception exception)
+            {
+                await _publisherService.PublishAsync(new ErrorMessage { Value = exception.Message });
+                await Console.Out.WriteLineAsync($"Exception: {exception.Message} was sent in {DateTime.Now} ");
             }
         }
     }
