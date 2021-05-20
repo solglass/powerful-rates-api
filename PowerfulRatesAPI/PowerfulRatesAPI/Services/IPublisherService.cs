@@ -12,7 +12,7 @@ namespace PowerfulRatesAPI.Services
 {
     public interface IPublisherService
     {
-        Task PublishAsync<T>(T type);
+        Task PublishAsync(object message);
     }
 }
 
