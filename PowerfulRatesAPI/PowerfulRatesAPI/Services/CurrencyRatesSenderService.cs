@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using PowerfulRatesAPI.Settings;
@@ -14,6 +14,7 @@ namespace PowerfulRatesAPI.Services
         private IPublisherService _publisherService;
         private ICurrencyRatesGetterService _currencyRates;
         private CurrencyRatesTimer _timer;
+        private readonly string _adminEmailAddress;
 
         public CurrencyRatesSenderService(IOptions<AppSettings> options, ICurrencyRatesGetterService currencyRates, IPublisherService publisherService)
         {
@@ -21,6 +22,7 @@ namespace PowerfulRatesAPI.Services
             _publisherService = publisherService;
             _timer = new CurrencyRatesTimer(options.Value.RATES_API_TIMER_INTERVAL);
             _timer.SubscribeToTimer((Object source, ElapsedEventArgs e) => SendMessagesAsync(source, e));
+            _adminEmailAddress = options.Value.RATES_API_ADMIN_EMAIL;
         }
  
         public async Task SendFirstMessage() => await SendMessagesAsync(null, null);
@@ -35,17 +37,32 @@ namespace PowerfulRatesAPI.Services
             }
             catch (ServiceUnavailableException exception)
             {
-                await _publisherService.PublishAsync(new ErrorMessage { Value = exception.ErrorMessage });
+                await _publisherService.PublishAsync(new EmailMessage
+                {
+                    Subject = Constants.ERROR_503_MESSAGE_SUBJECT,
+                    ToEmail = _adminEmailAddress,
+                    Body = Constants.ERROR_503_MESSAGE_BODY
+                });
                 await Console.Out.WriteLineAsync($"Exception: {exception.ErrorMessage}, with statuscode: {exception.StatusCode} was sent in {DateTime.Now} ");
             }
             catch (ParsingException exception)
             {
-                await _publisherService.PublishAsync(new ErrorMessage { Value = exception.ErrorMessage });
+                await _publisherService.PublishAsync(new EmailMessage 
+                {
+                    Subject = Constants.PARSING_ERROR_MESSAGE_SUBJECT,
+                    ToEmail = _adminEmailAddress,
+                    Body = Constants.PARSING_ERROR_MESSAGE_BODY
+                });
                 await Console.Out.WriteLineAsync($"Exception: {exception.ErrorMessage}, with statuscode: {exception.StatusCode} was sent in {DateTime.Now} ");
             }
             catch (Exception exception)
             {
-                await _publisherService.PublishAsync(new ErrorMessage { Value = exception.Message });
+                await _publisherService.PublishAsync(new EmailMessage 
+                {
+                    Subject = Constants.GLOBAL_ERROR_MESSAGE_SUBJECT,
+                    ToEmail = _adminEmailAddress,
+                    Body = exception.Message
+                });
                 await Console.Out.WriteLineAsync($"Exception: {exception.Message} was sent in {DateTime.Now} ");
             }
         }
